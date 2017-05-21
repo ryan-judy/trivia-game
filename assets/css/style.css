@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+p {
+	padding: 10px;
+}
+
+.choice-style {
+	width: 75px;
+    height: 100px;
+   	padding: 10px;
+   	display: block;
+
+
+}
