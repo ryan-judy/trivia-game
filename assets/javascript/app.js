@@ -2,16 +2,20 @@ $(document).ready(function() {
 
 var correct=0;
 var wrong=0;
-var unanswered;
-var number = 30;
-var clock = 5;
+var unanswered=0;
+var number = 11;
+var clock = 3;
+var total = 3;
 var start;
 var questionContainer;
 var choicesContainer;
 var intervalId;
+var intervalIdTwo;
 var display;
 var choiceStyle;
 var currentQuestion = 0;
+var endScreen = false;
+var indexValue;
 
 
 // objects of the question, choices, and answer
@@ -22,7 +26,7 @@ var trivia = [{
     }, {
 
 	question: "Who is the Gov. of Ohio?",
-    choices: ["John Husted", "Josh Kasich", "Leslie Knope", "Joe Schiavoni"],
+    choices: ["John Husted", "John Kasich", "Leslie Knope", "Joe Schiavoni"],
     answer: 1
 	
 	}, {
@@ -45,84 +49,98 @@ choiceStyle = $(".choice-style");
 	function startGame() {
 	// create a 20 second timer to answer the question
 		set ();
-
 	}
 	// function to display the question and choices objects
 		function set() {
-			intervalId = setInterval(timer, 1000);
+		intervalId = setInterval(timer, 1000);
+		if (total > 0) {
+				total--;
 				questionContainer.append(trivia[currentQuestion].question);
 				for (var i = 0; i < trivia.length; i++) {
 				var choices = trivia[i].choices;
-				//var answer = trivia[i].answer;
+				var answer = trivia[currentQuestion].answer;
 				console.log(choices)
-				//console.log(answer)
+				console.log(answer)
 }
 			// create each choice as a button 
 					for (var x = 0; x < choices.length; x++) {
 				   	display = $("<button>");
 					display.addClass("choice-style");
+					display.attr("data-indexvalue", x);
 					display.append(trivia[currentQuestion].choices[x]);
 					choicesContainer.append(display);
-					
-	// if choice clicked is equal to answer, then add to correct score, and display text and image,
-		$(".choice-style").on("click", function () {
+					console.log(display)
+			}			
+		// if choice clicked is equal to answer, then add to correct score, and display text and image,
+			$(".choice-style").on("click", function () {
+			indexValue = ($(this).attr("data-indexvalue"));
+			indexValue = parseInt(indexValue);		
+			if ( indexValue === trivia[currentQuestion].answer) {
+				clock=3;
+				transitionStop();
+				stop();
+				questionContainer.html("correct!");
+				correct++;
+				intervalIdTwo = setInterval(transition, 1000);
+				transition();
 
-		if ($(".choice-style").on("click"))
-{			console.log();
-			questionContainer.html("correct!");
-			correct++;
-			question.container
-			intervalId2 = setInterval(transition, 1000);
-			stop();
-			transition();
+			}
+		// if choice clicked is not answer, then add to wrong score, and display text and image.
+			else {
+				clock=3;
+				transitionStop();
+				stop();		
+				questionContainer.html("wrong! The correct answer is " + trivia[currentQuestion].choices[answer]);
+				wrong++;
+				intervalIdTwo = setInterval(transition, 1000);
+				transition();
+			}
+			})
 
-		}
-		else {
-			questionContainer.html("wrong! The correct answer is");
-			wrong++;
-			transition();
-		}
-		})
-	}
 }
-
-		
-
-
-// $(".choice-style").click()
-
-
-// if choice clicked is not answer, then add to wrong score, and display text and image.
-
+		else {
+			alert("game over");
+			stop();
+			total = 3;
+			currentQuestion = 0;
+			console.log(question)
+		}
+}
 
 // move onto next question and choices objects by calling on function
 
-
-
-
 	// if timer runs out, then add to unanswered score
-	function timer() {
-				$("#show-number").html("<h2>" + number + "</h2>");
-				number--;
-				if (number === 0) {
-					alert("time up");
-					stop();
-
-	    		}
-		}
-
-		function transition() {
+	function transition() {
 				console.log(clock);
 				clock--;
 				if (clock === 0) {
 					$("#show-number").empty();
 					questionContainer.empty();
 					choicesContainer.empty();
-					stop();
-					number=30;
+					number=11;
 					currentQuestion++;
 					set();
 					transitionStop();
+	    		}
+		}	
+
+
+	function timer() {
+				number--;
+				console.log(number);
+				console.log(clock);
+				$("#show-number").html("<h2>" + number + "</h2>");
+				if (number === 0) {
+					alert("time up");
+					unanswered++;
+					stop();
+					$("#show-number").empty();
+					questionContainer.empty();
+					choicesContainer.empty();
+					number=11;
+					currentQuestion++;
+					set();
+					transitionStop();					
 	    		}
 		}
 
@@ -132,12 +150,8 @@ choiceStyle = $(".choice-style");
 	    }
 
 	function transitionStop() {
-	    clearInterval(intervalId2);
+	    clearInterval(intervalIdTwo);
 	    }
-
-
-
-
 
 
 
