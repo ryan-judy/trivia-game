@@ -4,7 +4,7 @@ var correct=0;
 var wrong=0;
 var unanswered=0;
 var number = 10;
-var clock = 3;
+var clock = 4;
 var total = 3;
 var currentQuestion = 0;
 var start;
@@ -17,6 +17,8 @@ var choiceStyle;
 var endScreen;
 var indexValue;
 var picture;
+var choices;
+var answer = 0;
 
 
 // objects of the question, choices, and answer
@@ -61,10 +63,10 @@ questionCounter = $(".show-number");
 				questionCounter.html("<h2>" + number + "</h2>");	
 				intervalId = setInterval(timer, 1000);	
 				total--;
-				questionContainer.append(trivia[currentQuestion].question);
+				questionContainer.append("<h3>" + trivia[currentQuestion].question + "</h3>");
 				for (var i = 0; i < trivia.length; i++) {
-				var choices = trivia[i].choices;
-				var answer = trivia[currentQuestion].answer;
+				choices = trivia[i].choices;
+				answer = trivia[currentQuestion].answer;
 }
 			// create each choice as a button 
 					for (var x = 0; x < choices.length; x++) {
@@ -79,25 +81,15 @@ questionCounter = $(".show-number");
 			indexValue = ($(this).attr("data-indexvalue"));
 			indexValue = parseInt(indexValue);		
 			if ( indexValue === trivia[currentQuestion].answer) {
-				clock=3;
-				transitionStop();
-				stop();
-				answerImage();
-				intervalIdTwo = setInterval(transition, 1000);
-				transition();
-				questionContainer.html("<h2>Correct!</h2>");				
+				missed ();
+				questionContainer.html("<h3>Correct!</h3>");				
 				correct++;
 			}
 		// if choice clicked is not answer, then add to wrong score, and display text and image.
 			else {
-				clock=3;
-				transitionStop();
-				stop();		
-				answerImage();
-				intervalIdTwo = setInterval(transition, 1000);
-				transition();
-				questionContainer.html("<h2>Wrong!</h2><br> The correct answer is " + trivia[currentQuestion].choices[answer]);				
-				wrong++;				
+				missed ();
+				questionContainer.html("<h3>Wrong!</h3><br> The correct answer is " + trivia[currentQuestion].choices[answer]);				
+				wrong++;			
 			}
 			})
 
@@ -107,7 +99,13 @@ questionCounter = $(".show-number");
 			endScreen();
 			total = 3;
 			currentQuestion = 0;
+			wrong = 0;
+			correct = 0;
+			unanswered = 0;
 		}
+
+
+
 }
 
 // move onto next question and choices objects by calling on function
@@ -119,6 +117,14 @@ questionCounter = $(".show-number");
 				picture.addClass("answer-image");
 				picture.attr("src", trivia[currentQuestion].image);
 				$(".answer").append(picture);
+	}
+
+	function missed () {
+				clock=4;
+				stop();		
+				answerImage();
+				intervalIdTwo = setInterval(transition, 1000);
+				transition();
 	}
 
 	function endScreen() {
@@ -147,13 +153,13 @@ questionCounter = $(".show-number");
 				number--;
 				questionCounter.html("<h2>" + number + "</h2>");
 				if (number === 0) {
-					alert("time up");
+					clock=4;
+					stop();		
+					answerImage();
+					intervalIdTwo = setInterval(transition, 1000);
+					transition();
+					questionContainer.html("<h3>Times up!</h3><br> The correct answer is " + trivia[currentQuestion].choices[answer]);
 					unanswered++;
-   					stop();
-					number=10;
-					currentQuestion++;	
-					choicesContainer.empty();
-					set ();				
 	    		}
 		}
 
