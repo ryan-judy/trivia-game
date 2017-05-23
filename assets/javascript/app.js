@@ -3,9 +3,10 @@ $(document).ready(function() {
 var correct=0;
 var wrong=0;
 var unanswered=0;
-var number = 11;
+var number = 10;
 var clock = 3;
 var total = 3;
+var currentQuestion = 0;
 var start;
 var questionContainer;
 var choicesContainer;
@@ -13,26 +14,29 @@ var intervalId;
 var intervalIdTwo;
 var display;
 var choiceStyle;
-var currentQuestion = 0;
-var endScreen = false;
+var endScreen;
 var indexValue;
+var picture;
 
 
 // objects of the question, choices, and answer
 var trivia = [{
     question: "Who is the Mayor of Cleveland?",
     choices: ["Frank Jackson", "Armond Budish", "Leslie Knope", "Sherrod Brown"],
-    answer: 0
+    answer: 0,
+    image: "assets/images/placeholder.png"
     }, {
 
 	question: "Who is the Gov. of Ohio?",
     choices: ["John Husted", "John Kasich", "Leslie Knope", "Joe Schiavoni"],
-    answer: 1
+    answer: 1,
+    image: "assets/images/placeholder.png"
 	
 	}, {
     question: "What's My Name?",
     choices: ["Ryan", "Allen", "Judy", "Tom"],
-    answer: 0
+    answer: 0,
+    image: "assets/images/placeholder.png"
  	}];
 
 // declaring our jQuery elements to variables
@@ -40,36 +44,35 @@ start = $("#start");
 questionContainer = $("#question");
 choicesContainer = $("#choices");
 choiceStyle = $(".choice-style");
+questionCounter = $(".show-number");
 
 
 // function button for starting the trivia game
 	start.click(startGame);
-
-
 	function startGame() {
-	// create a 20 second timer to answer the question
+	// create a 20 second timer to answer the question	
 		set ();
 	}
 	// function to display the question and choices objects
 		function set() {
-		intervalId = setInterval(timer, 1000);
 		if (total > 0) {
+				choicesContainer.empty();
+				questionContainer.empty();
+				questionCounter.html("<h2>" + number + "</h2>");	
+				intervalId = setInterval(timer, 1000);	
 				total--;
 				questionContainer.append(trivia[currentQuestion].question);
 				for (var i = 0; i < trivia.length; i++) {
 				var choices = trivia[i].choices;
 				var answer = trivia[currentQuestion].answer;
-				console.log(choices)
-				console.log(answer)
 }
 			// create each choice as a button 
 					for (var x = 0; x < choices.length; x++) {
-				   	display = $("<button>");
+				   	display = $("<button type='button' class='btn btn-default btn-lg btn-block'>");
 					display.addClass("choice-style");
 					display.attr("data-indexvalue", x);
 					display.append(trivia[currentQuestion].choices[x]);
 					choicesContainer.append(display);
-					console.log(display)
 			}			
 		// if choice clicked is equal to answer, then add to correct score, and display text and image,
 			$(".choice-style").on("click", function () {
@@ -79,45 +82,60 @@ choiceStyle = $(".choice-style");
 				clock=3;
 				transitionStop();
 				stop();
-				questionContainer.html("correct!");
-				correct++;
+				answerImage();
 				intervalIdTwo = setInterval(transition, 1000);
 				transition();
-
+				questionContainer.html("<h2>Correct!</h2>");				
+				correct++;
 			}
 		// if choice clicked is not answer, then add to wrong score, and display text and image.
 			else {
 				clock=3;
 				transitionStop();
 				stop();		
-				questionContainer.html("wrong! The correct answer is " + trivia[currentQuestion].choices[answer]);
-				wrong++;
+				answerImage();
 				intervalIdTwo = setInterval(transition, 1000);
 				transition();
+				questionContainer.html("<h2>Wrong!</h2><br> The correct answer is " + trivia[currentQuestion].choices[answer]);				
+				wrong++;				
 			}
 			})
 
 }
 		else {
-			alert("game over");
 			stop();
+			endScreen();
 			total = 3;
 			currentQuestion = 0;
-			console.log(question)
 		}
 }
 
 // move onto next question and choices objects by calling on function
 
 	// if timer runs out, then add to unanswered score
+	function answerImage() {
+				choicesContainer.empty();
+				picture = $("<img>");
+				picture.addClass("answer-image");
+				picture.attr("src", trivia[currentQuestion].image);
+				$(".answer").append(picture);
+	}
+
+	function endScreen() {
+		questionContainer.html("<h2>Results:</h2>");
+		choicesContainer.append("<h3>Correct </h3>" + correct);
+		choicesContainer.append("<h3>Wrong </h3>" + wrong);
+		choicesContainer.append("<h3>Unanswered </h3>" + unanswered);
+	}
+
 	function transition() {
-				console.log(clock);
 				clock--;
 				if (clock === 0) {
-					$("#show-number").empty();
+					questionCounter.empty();
 					questionContainer.empty();
 					choicesContainer.empty();
-					number=11;
+					$(".answer").empty();
+					number=10;
 					currentQuestion++;
 					set();
 					transitionStop();
@@ -127,20 +145,15 @@ choiceStyle = $(".choice-style");
 
 	function timer() {
 				number--;
-				console.log(number);
-				console.log(clock);
-				$("#show-number").html("<h2>" + number + "</h2>");
+				questionCounter.html("<h2>" + number + "</h2>");
 				if (number === 0) {
 					alert("time up");
 					unanswered++;
-					stop();
-					$("#show-number").empty();
-					questionContainer.empty();
+   					stop();
+					number=10;
+					currentQuestion++;	
 					choicesContainer.empty();
-					number=11;
-					currentQuestion++;
-					set();
-					transitionStop();					
+					set ();				
 	    		}
 		}
 
@@ -152,8 +165,5 @@ choiceStyle = $(".choice-style");
 	function transitionStop() {
 	    clearInterval(intervalIdTwo);
 	    }
-
-
-
 
 });
