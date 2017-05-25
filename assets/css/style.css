@@ -1,9 +1,12 @@
 * {
   box-sizing: border-box;
 }
+
 body {
 	font-family: 'Baloo', cursive;
 	font-size: 16px;
+	background-image: url(../images/background.jpg);
+	background-size: 100%;
 }
 
 p {
@@ -12,26 +15,58 @@ p {
 
 h1 {
 	font-size: 62px;
+	text-align: center;
+	margin: 20px 0px;
 }
 
 h2 {
 	font-size: 48px;
-}
+	margin: 20px 0px;
 
+}
 
 h3 {
 	font-size: 32px;
+	margin: 20px 0px;
+
 }
+
 .choice-style {
-	width: 500px;
-    height: 100px;
+	width: 100%;
+    height: 75px;
    	padding: 10px;
    	display: block;
    	font-size: 24px;
-
+	margin: 10px 0px;
 }
 
 .answer-image {
-      width: 75px;
-      height: 100px;
+      width: 250px;
+      height: 300px;
+}
+
+.show-number {
+	text-align: center;
+	color: #d9534f;
+}
+
+#question {
+	text-align: center;
+}
+
+#choices {
+	text-align: center;
+}
+
+.answer {
+	text-align: center;
+	margin: 20px 0px;
+}
+
+.box {
+	margin-top:40px;
+}
+
+.container {
+	background-color: white;
 }

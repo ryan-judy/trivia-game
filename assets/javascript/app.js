@@ -5,7 +5,7 @@ var wrong=0;
 var unanswered=0;
 var number = 10;
 var clock = 4;
-var total = 3;
+var total = 7;
 var currentQuestion = 0;
 var start;
 var questionContainer;
@@ -26,23 +26,48 @@ var trivia = [{
     question: "Who is the Mayor of Cleveland?",
     choices: ["Frank Jackson", "Armond Budish", "Leslie Knope", "Sherrod Brown"],
     answer: 0,
-    image: "assets/images/placeholder.png"
+    image: "assets/images/frank.jpg"
     }, {
 
-	question: "Who is the Gov. of Ohio?",
-    choices: ["John Husted", "John Kasich", "Leslie Knope", "Joe Schiavoni"],
+	question: "What year did the Browns go to the Super Bowl?",
+    choices: ["1953", "1964", "1968", "1951"],
     answer: 1,
-    image: "assets/images/placeholder.png"
+    image: "assets/images/browns.jpg"
 	
 	}, {
-    question: "What's My Name?",
-    choices: ["Ryan", "Allen", "Judy", "Tom"],
-    answer: 0,
-    image: "assets/images/placeholder.png"
+	question: "What area school was the nation's first interracial, co-ed institute of higher learning?",
+    choices: ["John Carroll University", "Case Western Reserve University", "Oberlin College", "Cleveland State University"],
+    answer: 2,
+    image: "assets/images/oberlin.png"
+	
+	}, {
+	question: "What former Cleveland Safety Director is better known for bringing gangster Al Capone to justice?",
+    choices: ["John Husted", "Elliot Ness", "Ernie Anderson", "Andrew Carnegie"],
+    answer: 1,
+    image: "assets/images/eliotness.jpg"
+	
+	}, {
+	question: "What year was Cleveland established?",
+    choices: ["1868", "1796", "1804", "1820"],
+    answer: 1,
+    image: "assets/images/cleveland.jpg"
+	
+	}, {
+	question: "What is the birthplace of President James A. Garfield?",
+    choices: ["Mentor", "Lakewood", "Shaker Heights", "Moreland Hills"],
+    answer: 3,
+    image: "assets/images/garfield.jpg"
+	
+	}, {
+
+    question: "Which one of these celebrities was born in Cleveland",
+    choices: ["Tom Hanks", "Steph Curry", "Halle Berry", "Eliot Ness"],
+    answer: 2,
+    image: "assets/images/halle.jpg"
  	}];
 
 // declaring our jQuery elements to variables
-start = $("#start");
+start = $(".start");
 questionContainer = $("#question");
 choicesContainer = $("#choices");
 choiceStyle = $(".choice-style");
@@ -58,6 +83,7 @@ questionCounter = $(".show-number");
 	// function to display the question and choices objects
 		function set() {
 		if (total > 0) {
+				start.hide();
 				choicesContainer.empty();
 				questionContainer.empty();
 				questionCounter.html("<h2>" + number + "</h2>");	
@@ -97,7 +123,7 @@ questionCounter = $(".show-number");
 		else {
 			stop();
 			endScreen();
-			total = 3;
+			total = 7;
 			currentQuestion = 0;
 			wrong = 0;
 			correct = 0;
@@ -132,6 +158,7 @@ questionCounter = $(".show-number");
 		choicesContainer.append("<h3>Correct </h3>" + correct);
 		choicesContainer.append("<h3>Wrong </h3>" + wrong);
 		choicesContainer.append("<h3>Unanswered </h3>" + unanswered);
+		start.show("Play Again");
 	}
 
 	function transition() {
