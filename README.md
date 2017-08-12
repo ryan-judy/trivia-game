@@ -11,4 +11,4 @@ A Cleveland-themed trivia game using JavaScript for the logic and jQuery to mani
 3. JavaScript
 4. jQuery
 
-[View the application live on GitHub!] (https://ryan-judy.github.io/trivia-game/)
+[View the application live on GitHub!](https://ryan-judy.github.io/trivia-game/)
